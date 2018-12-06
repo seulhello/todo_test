@@ -3,8 +3,7 @@ const bxTodo = document.querySelector(".bx_todo"),
   todoList = document.querySelector(".list_todo");
 
 const TODO_LS = "todo_ls";
-const todoCont = [];
-
+let todoCont = [];
 
 function checkLocal() {
   const appLocal = localStorage.getItem(TODO_LS);
@@ -29,6 +28,7 @@ function printList(text) {
 
   createSpan.innerText = text;
   createBtn.innerText = "❌";
+  createBtn.addEventListener("click", removeBtn);  // 해당 이벤트 생성 이유 덜 파악됨
   createLi.appendChild(createBtn);
   createLi.appendChild(createSpan);
   todoList.appendChild(createLi);
@@ -38,6 +38,17 @@ function printList(text) {
     cont: text
   }
   todoCont.push(todoObj);
+  saveTodo();
+}
+
+function removeBtn(event) {
+  const btnInfo = event.target;
+  const currentLi = btnInfo.parentElement;
+  todoList.removeChild(currentLi);  // li 삭제를 생각 안함
+  const cleanArr = todoCont.filter(function (content) {
+    return content.id !== parseInt(currentLi.id);
+  });  // 해당 filter 부분을 따로 변수에 저장 안했음 
+  todoCont = cleanArr;
   saveTodo();
 }
 
